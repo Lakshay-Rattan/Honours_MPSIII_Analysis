@@ -1,0 +1,341 @@
+---
+title: "Trying things out"
+author: "LR"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r raw active velocity}
+
+A.5.vel <-
+A.5.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+    subset(!(active_velocity >15))
+
+
+B.5.vel <-
+B.5.fulldata %>%
+  group_by(fish_id) %>%
+  mutate(active_velocity = Distance_travelled/cum_movement) %>%
+    subset(!(active_velocity >15))
+
+C.5.vel <-
+C.5.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+
+A.7.vel <-
+A.7.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+B.7.vel <-
+B.7.fulldata %>%
+  group_by(fish_id) %>%
+  mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+C.7.vel <-
+C.7.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+
+A.14.vel <-
+A.14.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+B.14.vel <-
+B.14.fulldata %>%
+  group_by(fish_id) %>%
+  mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+C.14.vel <-
+C.14.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+```
+
+
+
+```{r STATS 5dpf active velocity}
+
+####removing samples over 14 velocity as 10-13 was the maximum a-v in other 5dpf trials while this one goes past 20.
+A.5.lm.vel <- A.5.vel %>%
+  group_by(fish_id) %>%
+  subset(!(active_velocity > 15)) %>%
+  droplevels() %>%
+  lmer(formula = log(active_velocity) ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .)
+
+plot(residuals(A.5.lm.vel) ~ fitted(A.5.lm.vel)) 
+qqPlot(residuals(A.5.lm.vel))
+
+
+Anova(A.5.lm.vel) 
+
+
+
+B.5.lm.vel <- B.5.vel %>%
+  droplevels() %>%
+  lmer(formula = log(active_velocity) ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .)
+
+plot(residuals(B.5.lm.vel) ~ fitted(B.5.lm.vel)) 
+qqPlot(residuals(B.5.lm.vel))
+
+Anova(B.5.lm.vel) 
+
+
+
+C.5.lm.vel <- C.5.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(C.5.lm.vel) 
+```
+
+```{r 7dpf STATS Velocity}
+
+
+
+
+A.7.lm.vel <- A.7.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+
+
+
+
+plot(residuals(sus) ~ fitted(sus)) 
+qqPlot(residuals(sus))
+Anova(A.7.lm.vel) 
+
+
+
+B.7.lm.vel <- B.7.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(B.7.lm.vel) 
+
+
+
+C.7.lm.vel <- C.7.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(C.7.lm.vel) 
+```
+
+```{r 14dpf STATS Velocity}
+
+A.14.lm.vel <- A.14.vel %>%
+  droplevels() %>%
+  lmer(formula = log(active_velocity) ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .)
+
+plot(residuals(A.14.lm.vel) ~ fitted(A.14.lm.vel)) 
+qqPlot(residuals(A.14.lm.vel))
+
+Anova(A.14.lm.vel) 
+
+
+
+B.14.lm.vel <- B.14.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(B.14.lm.vel) 
+
+
+
+C.14.lm.vel <- C.14.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(C.14.lm.vel) 
+```
+
+
+
+
+
+
+
+```{r STATS TIME MOVING}
+
+        
+        
+A.5.lm.mov_time <- A.5.vel %>%
+    droplevels() %>%
+  glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+      
+plot(residuals(A.5.lm.mov_time) ~ fitted(A.5.lm.mov_time)) 
+qqPlot(residuals(A.5.lm.mov_time))
+
+Anova(C.14.lm.mov_time) 
+
+
+B.5.lm.mov_time <- B.5.vel %>%
+  droplevels() %>%
+  glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+
+
+Anova(B.5.lm.mov_time) 
+
+
+
+C.5.lm.mov_time <- C.5.vel %>%
+  droplevels() %>%
+    glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+Anova(C.5.lm.mov_time) 
+
+
+A.7.lm.mov_time <- A.7.vel %>%
+  droplevels() %>%
+  glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+
+
+Anova(A.7.lm.mov_time)
+
+
+B.7.lm.mov_time <- B.7.vel %>%
+  droplevels() %>%
+  glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+
+Anova(B.7.lm.mov_time) 
+
+
+
+C.7.lm.mov_time <- C.7.vel %>%
+  droplevels() %>%
+   glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+Anova(C.7.lm.mov_time) 
+
+
+A.14.lm.mov_time <- A.14.vel %>%
+  droplevels() %>%
+   glmmTMB(formula = cum_movement/1200.1 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+Anova(A.14.lm.mov_time) 
+
+
+
+B.14.lm.mov_time <- B.14.vel %>%
+  droplevels() %>%
+   glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+Anova(B.14.lm.mov_time) 
+
+
+
+C.14.lm.mov_time <- C.14.vel %>%
+  droplevels() %>%
+    glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+Anova(C.14.lm.mov_time) 
+
+
+
+
+```
+
+
+```{r}
+B.14.fulldata %>%
+plate_plot(
+  value = Distance_travelled,
+  label = Distance_travelled,
+  plate_size = 24,
+  position = Position,
+  plate_type = "round",
+  scale = 1.5,
+  label_size = 1.5
+) +
+  facet_wrap(~Trial ~Bin)
+
+C.5.totaldist %>%
+plate_plot(
+  value = Total_distance,
+  plate_size = 24,
+  position = Position,
+  plate_type = "round",
+  scale = 1.5,
+  label_size = 1.5
+) +
+  facet_wrap(~Trial) 
+
+
+
+```
+
+
+
+
+
+
+
+
