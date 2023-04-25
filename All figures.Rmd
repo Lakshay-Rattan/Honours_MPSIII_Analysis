@@ -391,7 +391,7 @@ Anova(B.14.model.20minbin) %>%
 
 C.14.model.20minbin <- C.14.fulldata %>%  
    mutate(fish_id = as.character(fish_id)) %>% 
-    droplevels() %>%
+    droplevels() %>% 
   lmer(formula = sqrt(Distance_travelled) ~ (Genotype*Bin) + (1|Trial) + (1|fish_id),
        data = .)
        
@@ -486,7 +486,7 @@ Anova(B.14.lm.freq)
 C.14.lm.freq <-
   C.14.fulldata %>% 
   dplyr::mutate(fish_id = as.character(fish_id)) %>% 
-  glmer.nb(Freq_in_centre ~ Bin + Genotype + (1|Trial) + (1|fish_id),
+  glmer.nb(Freq_in_centre ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
            data = .,
            family = Poisson (link = "log"))
 

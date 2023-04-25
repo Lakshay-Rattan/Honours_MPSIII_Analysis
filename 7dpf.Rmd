@@ -39,70 +39,20 @@ theme_set(theme_bw())
 
 
 
-# introduction
-
-here, i will analyse 
-
-first i'll read in data
-
 ```{r}
-A.7.totaldist <-
-  readRDS("A.7.totaldist.rds") %>%
-  mutate(MPS = "A",
-         Age = "7",
-        Genotype = fct_relevel(Genotype,"wt", 
-            "het", "hom")) %>%
-  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/S387Lfs', 'hom' = 'S387Lfs/S387Lfs'))
-
-
-
-A.7.fulldata <-
-  readRDS("A.7.fulldata.rds") %>%
-  mutate(MPS = "A",
-         Age = "7",
-        Genotype = fct_relevel(Genotype,"wt", 
-            "het", "hom"))%>%
-  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/S387Lfs', 'hom' = 'S387Lfs/S387Lfs'))
-
-
-#B7
-B.7.totaldist <-
-  readRDS("B.7.totaldist.rds") %>%
-  mutate(MPS = "B",
-         Age = "7",
-        Genotype = fct_relevel(Genotype,"wt", 
-            "het", "hom"))%>%
-  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/A603Efs', 'hom' = 'A603Efs/A603Efs'))
-
-B.7.fulldata <-
-  readRDS("B.7.fulldata.rds") %>%
-  mutate(MPS = "B",
-         Age = "7",
-        Genotype = fct_relevel(Genotype,"wt", 
-            "het", "hom"))%>%
-  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/A603Efs', 'hom' = 'A603Efs/A603Efs'))
-
-#C7
-C.7.totaldist <-
-  readRDS("C.7.totaldist.rds") %>%
-  mutate(MPS = "C",
-         Age = "7",
-        Genotype = fct_relevel(Genotype,"wt", 
-            "het", "hom"))%>%
-  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/G557fs', 'hom' = 'G557fs/G557fs'))
-        
-
-C.7.fulldata <-
-  readRDS("C.7.fulldata.rds") %>%
-  mutate(MPS = "C",
-         Age = "7",
-        Genotype = fct_relevel(Genotype,"wt", 
-            "het", "hom"))%>%
-  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/G557fs', 'hom' = 'G557fs/G557fs'))
-
+C.5.totaldist %>%
+plate_plot(
+  value = Total_distance,
+  label = Total_distance,
+  plate_size = 24,
+  position = Position,
+  plate_type = "round",
+  scale = 0.9,
+  label_size = 0
+) +
+  facet_wrap(~Trial)
+ggsave(filename = "plate.png", width = 30, height = 30, units = "cm", dpi = 400, scale = .6)
 ```
-
-# model fits
 
 
 ```{r making models distance travelled}
@@ -291,7 +241,7 @@ B.7.lm.freq <-
 C.7.lm.freq <-
   C.7.fulldata %>% 
   dplyr::mutate(fish_id = as.character(fish_id)) %>% 
-  glmer.nb(Freq_in_centre ~ Bin + Genotype + (1|Trial) + (1|fish_id),
+  glmer.nb(Freq_in_centre ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
            data = .,
            family = Poisson (link = "log"))
 

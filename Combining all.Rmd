@@ -1122,7 +1122,7 @@ ggarrange(
     scale_y_continuous(name = "Ratio", limits = c(0,0.29)) +
     B.col1 + B.col2 +
     facet_wrap(~Bin) +
-    ggtitle("MPS IIIB 5 dpf", subtitle = "") +
+    ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype:bin = 0.41*") +
  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
   
   
@@ -1144,11 +1144,12 @@ ggarrange(
                   size = 1,
                   position = position_dodge(width = 0.75)) +
     theme(legend.position = "none") +
-    scale_x_discrete( name = " ")+ 
+      scale_x_discrete(name = " ", labels=c("wt" = "+/+", "het" = "+/A603Efs", "hom" = "A603Efs/A603Efs")) +
     scale_y_continuous(name = "Ratio", limits = c(0,0.29)) +
     B.col1 + B.col2 +
     facet_wrap(~Bin) +
-    ggtitle("MPS IIIB 7 dpf", subtitle = "") +
+   
+    ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype:bin = 0.61*") +
  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
   
   print(emmeans(B.14.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
@@ -1299,7 +1300,7 @@ ggarrange(
     scale_y_continuous(name = "Number of crosses", limits = c(0,120)) +
     A.col1 + A.col2 +
     facet_wrap(~Bin) +
-    ggtitle("MPS IIIA 5 dpf", subtitle = "") +
+    ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype:bin = 0.15*") +
  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
   
   print(emmeans(A.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
@@ -1384,7 +1385,7 @@ ggarrange(
     scale_y_continuous(name = "Number of crosses", limits = c(0,105)) +
     B.col1 + B.col2 +
     facet_wrap(~Bin) +
-    ggtitle("MPS IIIB 5 dpf", subtitle = "") +
+    ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype:bin = 0.34*") +
  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
   
   print(emmeans(B.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
@@ -1408,7 +1409,7 @@ ggarrange(
     scale_y_continuous(name = "Number of crosses", limits = c(0,105)) +
     B.col1 + B.col2 +
     facet_wrap(~Bin) +
-    ggtitle("MPS IIIB 7 dpf", subtitle = "") +
+    ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype:bin = 0.15*") +
  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
   
   
@@ -1469,7 +1470,7 @@ ggarrange(
     scale_y_continuous(name = "Number of crosses", limits = c(0,150)) +
     C.col1 + C.col2 +
     facet_wrap(~Bin) +
-    ggtitle("MPS IIIC 5 dpf", subtitle = "") +
+    ggtitle("MPS IIIC 5 dpf", subtitle = "Effect of genotype:bin = 0.99*") +
  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
   
   print(emmeans(C.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
@@ -1493,7 +1494,7 @@ ggarrange(
     scale_y_continuous(name = "Number of crosses", limits = c(0,150)) +
     C.col1 + C.col2 +
     facet_wrap(~Bin) +
-    ggtitle("MPS IIIC 7 dpf", subtitle = "") +
+    ggtitle("MPS IIIC 7 dpf", subtitle = "Effect of genotype:bin = 0.0018*") +
  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
   
   
@@ -1518,7 +1519,7 @@ ggarrange(
     scale_y_continuous(name = "Number of crosses", limits = c(0,150)) +
     C.col1 + C.col2 +
     facet_wrap(~Bin) +
-    ggtitle("MPS IIIC 14 dpf", subtitle = "") +
+    ggtitle("MPS IIIC 14 dpf", subtitle = "Effect of genotype:bin = 0.68*") +
  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
   
   ncol = 1,
@@ -1777,7 +1778,7 @@ ggarrange(
     theme(text = element_text(size = 10)),
   ncol = 1 )
 
-ggsave(filename = "emmean velocity/ALL EMMEAN velocity.png", width = 40, height = 90, units = "cm", dpi = 400, scale = 0.7)
+ggsave(filename = "emmean velocity/ALL EMMEAN velocity.png", width = 40, height = 90, units = "cm", dpi = 400, scale = 0.6)
 
 ```
 
@@ -2245,7 +2246,7 @@ labels = "AUTO"
 )
 
 
-ggsave(filename = "emmean time in centre/EMMEAN ALL time in centre.png", width = 30, height = 90, units = "cm", dpi = 400, scale = .7)
+ggsave(filename = "emmean time in centre/EMMEAN ALL time in centre.png", width = 30, height = 90, units = "cm", dpi = 400, scale = .6)
 
 
 )
