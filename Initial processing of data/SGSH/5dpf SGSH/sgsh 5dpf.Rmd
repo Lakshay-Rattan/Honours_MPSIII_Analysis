@@ -1,0 +1,130 @@
+---
+title: "sgsh 5dpf"
+author: "LR"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+---
+title: "5dpf sgsh"
+author: "LR"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r library, include=FALSE}
+# data manipulation
+library(tidyverse)
+library(magrittr)
+library(readxl)
+
+# statistical analysis
+library(lme4)
+library(broom)
+library(car)
+library(performance)
+library(emmeans)
+library(MASS)
+
+# data visualstion
+library(scales)
+library(ggpubr)
+library(ggeasy)
+library(ggfortify)
+library(ggbeeswarm)
+library(kableExtra)
+library(ggplate)
+
+theme_set(theme_bw())
+```
+
+
+
+
+```{r joining data}
+
+sgsh <-
+  read_excel("20 min sgsh.xlsx") %>%
+  subset(select = -(`...1`))
+  
+  sgsh <-
+  sgsh %>%
+  rename(
+    "Trial" = `...2`,
+    "Position" = `...3`,
+    "Bin" = `...4`,
+    "Distance_travelled" = "Distance moved center-point Total mm",
+    "Mean_Velocity" = "Velocity center-point Mean mm/s",
+    "Freq_in_centre" = "In zone centre / center-point Frequency" ,
+    "Time_in_centre" = "In zone centre / center-point Cumulative Duration s",
+    "cum_movement" = "Movement Moving / center-point Cumulative Duration s",
+    "cum_stopping" = "Movement Not Moving / center-point Cumulative Duration s"
+    ) %>%
+    mutate(Bin = factor(Bin, levels = c("Start-0:20:00", "0:20:00-0:40:00", "0:40:00-1:00:00")),
+       Trial = str_remove(Trial, pattern = "Trial     ") %>%
+         as.factor())
+  
+  meta <-
+  read_excel("Genotype sgsh 5dpf.xlsx") %>%
+  mutate(Genotype = factor(Genotype, levels = c('wt', 'het', 'hom')),
+         Trial = as.factor(Trial),
+         Position = as.factor(Position)
+  )
+
+
+sgsh <-
+  meta %>%
+  left_join(sgsh, by = c("Trial", "Position")) %>%
+  na.omit
+
+
+```
+
+```{r proportions}
+
+totaldist <-
+  sgsh %>%
+  group_by(fish_id) %>%
+  mutate(Total_distance = sum(Distance_travelled)) %>%
+  dplyr::select(fish_id, Trial, Position, Genotype, Total_distance, Freq_in_centre) %>%
+  dplyr::distinct(Total_distance, .keep_all = TRUE) %>%
+  ungroup() %>%
+  droplevels()
+
+
+
+
+geno.props.plot <- function(xaxis, input) {
+  ggplot(data = input, aes(x = xaxis, fill = Genotype)) +
+    geom_bar(mapping = aes(x = Genotype)) +
+    scale_fill_viridis_d(option = "plasma",
+                       end = 0.85)
+}
+
+
+geno.props.plot(input = totaldist, xaxis = "Genotype")
+
+
+```
+
+
+```{r exporting data}
+
+totaldist %>% saveRDS("A.5.totaldist.rds")
+
+totaldist.hgsnat %>%
+  group_by(Genotype) %>%
+  #dplyr::mutate(Total_dist = as.numeric(Total_dist)) %>%
+  summarise(
+    n = n(),
+    mean = mean(Total_distance),
+    median = median(Total_distance))
+
+sgsh %>% saveRDS("A.5.fulldata.rds")
+
+
+```

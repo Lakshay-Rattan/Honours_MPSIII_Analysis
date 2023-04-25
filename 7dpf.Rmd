@@ -8,7 +8,7 @@ output:
 editor_options:
   chunk_output_type: console
 ---
-
+Making models for 7 dpf families
 ```{r library, include=FALSE}
 # data manipulation
 library(tidyverse)
@@ -166,6 +166,106 @@ Anova(C.7.model.20minbin) %>%
 
 
 
+
+
+```
+
+
+```{r active velocity}
+A.7.vel <-
+A.7.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+B.7.vel <-
+B.7.fulldata %>%
+  group_by(fish_id) %>%
+  mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+C.7.vel <-
+C.7.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+```
+
+
+```{r active velocity models}
+A.7.lm.vel <- A.7.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+
+
+
+
+plot(residuals(sus) ~ fitted(sus)) 
+qqPlot(residuals(sus))
+Anova(A.7.lm.vel) 
+
+
+
+B.7.lm.vel <- B.7.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(B.7.lm.vel) 
+
+
+
+C.7.lm.vel <- C.7.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(C.7.lm.vel) 
+```
+
+
+```{r time moving models}
+A.7.lm.mov_time <- A.7.vel %>%
+  droplevels() %>%
+  glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+
+
+Anova(A.7.lm.mov_time)
+
+
+B.7.lm.mov_time <- B.7.vel %>%
+  droplevels() %>%
+  glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+
+Anova(B.7.lm.mov_time) 
+
+
+
+C.7.lm.mov_time <- C.7.vel %>%
+  droplevels() %>%
+   glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+Anova(C.7.lm.mov_time) 
 
 
 ```

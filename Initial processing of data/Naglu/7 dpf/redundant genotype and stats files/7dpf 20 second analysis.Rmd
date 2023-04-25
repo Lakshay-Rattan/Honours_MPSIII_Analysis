@@ -1,0 +1,282 @@
+---
+title: "7dpf 20second velocity"
+author: "LR"
+date: "2023-02-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## LIBRARY
+
+```{r}
+# data manipulation
+library(tidyverse)
+library(magrittr)
+library(readxl)
+
+# statistical analusis
+library(lme4)
+library(broom)
+library(car)
+library(performance)
+library(emmeans)
+library(MASS)
+
+# data visualstion
+library(scales)
+library(ggpubr)
+library(ggeasy)
+library(ggfortify)
+library(ggbeeswarm)
+library(kableExtra)
+
+theme_set(theme_bw())
+```
+
+## DATA addition
+
+```{r}
+data.20.naglu.7 <-
+  read_excel("/Users/Lakshay/Desktop/Honours/R data/7 dpf/Statistics 20 seconds.xlsx") %>%
+  dplyr::select(Trial = 2,
+                Position =`...3`,
+                Bin = `...4`,
+                Distance_travelled = 'Distance moved center-point Total mm',
+                mean_velocity = "Velocity center-point Mean mm/s",
+                zone_intercepts = "In zone centre / center-point Frequency",
+                time_at_middle = "In zone centre / center-point Cumulative Duration s",
+                -`Independent Variable Independent Variable Treatment`) %>%
+        mutate(Trial = str_remove(Trial, pattern = "Trial     "),
+                Bin = factor(Bin, levels = unique(Bin)),
+                Distance_travelled = as.numeric(Distance_travelled))
+
+        
+ 
+
+# read in metadata
+meta.naglu.7 <-
+  read_excel("/Users/Lakshay/Desktop/Honours/R data/7 dpf/Old geno and stats stuff/Genotype 7dpf different name of arenas.xlsx") %>%
+  mutate(Genotype = factor(Genotype, levels = c("wt", "het", "hom")),
+         Trial = as.factor(Trial),
+         Position = as.factor(Position)
+  )
+
+# join the spreadsheets together
+stb.data.naglu.7 <-
+  meta.naglu.7 %>%
+  left_join(data.20.naglu.7, by = c("Trial", "Position")) %>%
+  na.omit
+```
+
+##Velocity overall Got the data now lets hit up some velocity calcs.
+
+```{r Overall mean velocity at all points. }
+
+
+  ggplot(stb.data.naglu.7, aes(x = Bin, y = mean_velocity)) +
+  geom_line(aes(group = Genotype))
+
+```
+
+```{r velocity for Trial 1}
+
+small_t1 <- 
+stb.data.naglu.7 %>%
+  subset(Trial == 1) 
+
+
+temp <-
+small_t1 %>%
+  dplyr::select(Bin) %>%
+  unique %>%
+  as_tibble %>%
+  set_colnames("Bin") %>%
+  mutate(Bin_number = rownames(.),
+         Bin_number = as.numeric(Bin_number)) 
+
+small_t1 <-
+  small_t1 %>%
+  left_join(temp, by = "Bin")
+
+
+small_t1 %>%
+ggplot(aes(x = Bin_number, y = mean_velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 1")
+ 
+ggsave(filename = "", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+
+
+```
+
+```{r velocity for trial 2}
+small_t2 <- 
+stb.data.naglu.7 %>%
+  subset(Trial == 2) 
+
+
+small_t2 <-
+  small_t2 %>%
+  left_join(temp, by = "Bin")
+
+
+small_t2 %>%
+ggplot(aes(x = Bin_number, y = mean_velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 2")
+```
+
+```{r velocity for trial 3}
+
+small_t4 <- 
+stb.data.naglu.7 %>%
+  subset(Trial == 4) 
+
+
+temp1 <-
+small_t4 %>%
+  dplyr::select(Bin) %>%
+  unique %>%
+  as_tibble %>%
+  set_colnames("Bin") %>%
+  mutate(Bin_number = rownames(.),
+         Bin_number = as.numeric(Bin_number)) 
+
+small_t4 <-
+  small_t4 %>%
+  left_join(temp1, by = "Bin")
+
+
+small_t4 %>%
+ggplot(aes(x = Bin_number, y = mean_velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 4")
+ 
+ggsave(filename = "", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+
+
+```
+
+```{r velocity for trial 4}
+
+small_t5 <- 
+stb.data.naglu.7 %>%
+  subset(Trial == 5) 
+
+
+small_t5 <-
+  small_t5 %>%
+  left_join(temp1, by = "Bin")
+
+
+small_t5 %>%
+ggplot(aes(x = Bin_number, y = mean_velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 5")
+ 
+ggsave(filename = "", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+
+
+```
+
+
+
+```{r velocity for trial 5}
+
+small_t6 <- 
+stb.data.naglu.7 %>%
+  subset(Trial == 6) 
+
+
+small_t6 <-
+  small_t6 %>%
+  left_join(temp1, by = "Bin")
+
+
+small_t6 %>%
+ggplot(aes(x = Bin_number, y = mean_velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 6")
+ 
+ggsave(filename = "", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+
+
+```
+
+```{r making function for distance per time bin}
+
+plot20dist <- function(ntrial) {
+  
+  
+stb.data.naglu.7 %>%
+  subset(Trial == ntrial) %>%
+    left_join(temp1, by = "Bin") %>%
+    ggplot(aes(x = Bin_number, y = Distance_travelled)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+     geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = " Distance") +
+  scale_x_continuous(name = "20 second time bins") 
+}
+  
+
+plot20dist(ntrial = 6) +
+ggtitle("Trial 5")
+ 
+
+ggsave(filename = "", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+
+
+```

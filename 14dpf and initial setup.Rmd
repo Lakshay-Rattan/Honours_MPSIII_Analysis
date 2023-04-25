@@ -1,0 +1,577 @@
+---
+title: "14dpf all"
+author: "LR"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+Making models for 14 dpf families
+
+```{r library, include=FALSE}
+# data manipulation
+library(tidyverse)
+library(magrittr)
+library(readxl)
+
+# statistical analysis
+library(lme4)
+library(broom)
+library(car)
+library(performance)
+library(emmeans)
+library(MASS)
+
+# data visualstion
+library(scales)
+library(ggpubr)
+library(ggeasy)
+library(ggfortify)
+library(ggbeeswarm)
+library(kableExtra)
+library(ggplate)
+library(cowplot)
+library(glmmTMB)
+theme_set(theme_bw())
+```
+
+```{r setup}
+
+#A5
+A.5.totaldist <-
+  readRDS("A.5.totaldist.rds") %>%
+  mutate(MPS = "A",
+         Age = "5",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom")) %>%
+  subset(!(fish_id ==74) &
+           !(fish_id == 167)) %>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/S387Lfs', 'hom' = 'S387Lfs/S387Lfs'))
+              
+
+
+A.5.fulldata <-
+  readRDS("A.5.fulldata.rds") %>%
+  mutate(MPS = "A",
+         Age = "5",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom")) %>%
+  subset(!(fish_id ==74) &
+           !(fish_id == 167)) %>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/S387Lfs', 'hom' = 'S387Lfs/S387Lfs'))
+
+
+
+
+#B5
+B.5.totaldist <-
+  readRDS("b.5.totaldist.rds") %>%
+  mutate(MPS = "B",
+         Age = "5",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/A603Efs', 'hom' = 'A603Efs/A603Efs'))
+
+B.5.fulldata <-
+  readRDS("B.5.fulldata.rds") %>%
+  mutate(MPS = "B",
+         Age = "5",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom")) %>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/A603Efs', 'hom' = 'A603Efs/A603Efs'))
+
+#C5
+C.5.totaldist <-
+  readRDS("C.5.totaldist.rds") %>%
+  mutate(MPS = "C",
+         Age = "5",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/G557fs', 'hom' = 'G557fs/G557fs'))
+
+C.5.fulldata <-
+  readRDS("C.5.fulldata.rds") %>%
+  mutate(MPS = "C",
+         Age = "5",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/G557fs', 'hom' = 'G557fs/G557fs'))
+
+
+
+#A7
+A.7.totaldist <-
+  readRDS("A.7.totaldist.rds") %>%
+  mutate(MPS = "A",
+         Age = "7",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom")) %>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/S387Lfs', 'hom' = 'S387Lfs/S387Lfs'))
+
+
+
+A.7.fulldata <-
+  readRDS("A.7.fulldata.rds") %>%
+  mutate(MPS = "A",
+         Age = "7",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/S387Lfs', 'hom' = 'S387Lfs/S387Lfs'))
+
+
+#B7
+B.7.totaldist <-
+  readRDS("B.7.totaldist.rds") %>%
+  mutate(MPS = "B",
+         Age = "7",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/A603Efs', 'hom' = 'A603Efs/A603Efs'))
+
+B.7.fulldata <-
+  readRDS("B.7.fulldata.rds") %>%
+  mutate(MPS = "B",
+         Age = "7",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/A603Efs', 'hom' = 'A603Efs/A603Efs'))
+
+#C7
+C.7.totaldist <-
+  readRDS("C.7.totaldist.rds") %>%
+  mutate(MPS = "C",
+         Age = "7",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/G557fs', 'hom' = 'G557fs/G557fs'))
+        
+
+C.7.fulldata <-
+  readRDS("C.7.fulldata.rds") %>%
+  mutate(MPS = "C",
+         Age = "7",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/G557fs', 'hom' = 'G557fs/G557fs'))
+
+
+#A14
+A.14.totaldist <-
+  readRDS("A.14.totaldist.rds") %>%
+  mutate(MPS = "A",
+         Age = "14",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/S387Lfs', 'hom' = 'S387Lfs/S387Lfs'))
+
+
+A.14.fulldata <-
+  readRDS("A.14.fulldata.rds") %>%
+  mutate(MPS = "A",
+         Age = "14",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/S387Lfs', 'hom' = 'S387Lfs/S387Lfs'))
+
+#B14
+B.14.totaldist <-
+  readRDS("B.14.totaldist.rds") %>%
+  mutate(MPS = "B",
+         Age = "14",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom")) %>%
+  subset(!(fish_id == c(23, 35))) %>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/A603Efs', 'hom' = 'A603Efs/A603Efs'))
+
+
+
+B.14.fulldata <-
+  readRDS("B.14.fulldata.rds") %>%
+  mutate(MPS = "B",
+         Age = "14",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom")) %>%
+  dplyr::rename("cum_movement" = "Movement Moving / center-point Cumulative Duration s") %>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/A603Efs', 'hom' = 'A603Efs/A603Efs'))
+
+
+#C14
+C.14.totaldist <-
+  readRDS("C.14.totaldist.rds") %>%
+  mutate(MPS = "C",
+         Age = "14",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/G557fs', 'hom' = 'G557fs/G557fs'))
+
+C.14.fulldata <-
+  readRDS("C.14.fulldata.rds") %>%
+  mutate(MPS = "C",
+         Age = "14",
+        Genotype = fct_relevel(Genotype,"wt", 
+            "het", "hom"))%>%
+  dplyr::mutate(Genotype = recode_factor(Genotype, 'wt' = '+/+', 'het' = '+/G557fs', 'hom' = 'G557fs/G557fs'))
+
+```
+
+```{r A legend}
+
+A.14.legtrial <-
+A.14.totaldist %>%
+  
+  ggplot(aes(x = Genotype, y = Total_distance)) +
+  geom_jitter(aes(colour = Genotype,
+                  shape = Trial),
+              size = 2) +
+   guides(colour = "none") +
+    #scale_shape_manual(values= c(16,17,15,3,7,8,13),
+     #                  guide = guide_legend(nrow = 1)) +
+  theme(legend.position = "top") +
+  labs(color = "Genotype", shape = "Trial") +
+  scale_colour_discrete(guide = FALSE) +
+  scale_fill_discrete(guide = FALSE) 
+
+  
+
+A.14.legtrial
+
+```
+
+
+```{r colours}
+A.col1 <- 
+  scale_fill_viridis_d(option = "mako",
+                       begin = .85,
+                       end = .45)
+A.col2 <-
+  scale_color_viridis_d(option = "mako",
+                        begin = .85,
+                        end = .45)
+
+
+B.col1 <- 
+  scale_fill_viridis_d(option = "inferno",
+                       begin = 0.88,
+                       end = .6) 
+B.col2 <-
+  scale_colour_viridis_d(option = "inferno",
+                         begin = 0.88,
+                         end = .6)
+
+
+C.col1 <-
+  scale_fill_viridis_d(option = "magma",
+                       end = 0.18, begin = .6) 
+C.col2 <-
+  scale_colour_viridis_d(option = "magma",
+                         end = 0.18, begin = 0.6) 
+```
+
+
+
+
+```{r making models distance travelled}
+
+
+#A model----
+A.14.model.totaldistance <- A.14.totaldist %>%
+  droplevels() %>%
+  lmer(formula = sqrt(Total_distance) ~ Genotype + (1|Trial))
+
+plot(residuals(A.14.model.totaldistance) ~ fitted(A.14.model.totaldistance)) 
+
+qqPlot(residuals(A.14.model.totaldistance))
+
+
+Anova(A.14.model.totaldistance) %>%
+  as.data.frame() %>%
+  dplyr::rename(pval = `Pr(>Chisq)`) %>%
+  kable(caption = "Type II Wald chisquare test of LME") %>%
+  kable_styling()
+
+
+#B model-----------
+B.14.model.totaldistance <- B.14.totaldist %>%
+  droplevels() %>%
+  lmer(formula = log(Total_distance) ~ Genotype + (1|Trial))
+
+plot(residuals(B.14.model.totaldistance) ~ fitted(B.14.model.totaldistance)) 
+qqPlot(residuals(B.14.model.totaldistance))
+
+Anova(B.14.model.totaldistance) %>%
+  as.data.frame() %>%
+  dplyr::rename(pval = `Pr(>Chisq)`) %>%
+  kable(caption = "Type II Wald chisquare test of LME") %>%
+  kable_styling()
+
+
+sus <-
+A.7.totaldist %>%
+  droplevels() %>%
+  lmer(formula = Total_distance ~ Genotype + (1|Trial))
+plot(residuals(sus) ~ fitted(sus)) 
+qqPlot(residuals(sus))
+
+
+#C model----
+C.14.model.totaldistance <- C.14.totaldist %>%
+  droplevels() %>%
+  lmer(formula = sqrt(Total_distance) ~ Genotype + (1|Trial))
+
+plot(residuals(C.14.model.totaldistance) ~ fitted(C.14.model.totaldistance)) 
+qqPlot(residuals(C.14.model.totaldistance))
+
+Anova(C.14.model.totaldistance) %>%
+  as.data.frame() %>%
+  dplyr::rename(pval = `Pr(>Chisq)`) %>%
+  kable(caption = "Type II Wald chisquare test of LME") %>%
+  kable_styling()
+
+```
+
+em plots for overall distance travelled
+
+```{r binned distance travelled STATS}
+A.14.model.20minbin <- A.14.fulldata %>%  
+  mutate(fish_id = as.character(fish_id)) %>% 
+    droplevels() %>%
+  lmer(formula = log(Distance_travelled) ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .)
+       
+plot(residuals(A.14.model.20minbin) ~ fitted(A.14.model.20minbin)) 
+qqPlot(residuals(A.14.model.20minbin))
+
+
+
+
+
+
+
+Anova(A.14.model.20minbin) %>%
+  as.data.frame() %>%
+  dplyr::rename(pval = `Pr(>Chisq)`) %>%
+  kable(caption = "Type II Wald chisquare test of LME") %>%
+  kable_styling()
+
+
+
+B.14.model.20minbin <- B.14.fulldata %>%  
+  mutate(fish_id = as.character(fish_id)) %>% 
+    droplevels() %>%
+  lmer(formula = log(Distance_travelled) ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .)
+
+       
+plot(residuals(B.14.model.20minbin) ~ fitted(B.14.model.20minbin)) 
+qqPlot(residuals(B.14.model.20minbin))
+
+
+
+Anova(B.14.model.20minbin) %>%
+  as.data.frame() %>%
+  dplyr::rename(pval = `Pr(>Chisq)`) %>%
+  kable(caption = "Type II Wald chisquare test of LME") %>%
+  kable_styling()
+
+
+
+C.14.model.20minbin <- C.14.fulldata %>%  
+   mutate(fish_id = as.character(fish_id)) %>% 
+    droplevels() %>% 
+  lmer(formula = sqrt(Distance_travelled) ~ (Genotype*Bin) + (1|Trial) + (1|fish_id),
+       data = .)
+       
+plot(residuals(C.14.model.20minbin) ~ fitted(C.14.model.20minbin)) 
+qqPlot(residuals(C.14.model.20minbin))
+
+
+Anova(C.14.model.20minbin) %>%
+  as.data.frame() %>%
+  dplyr::rename(pval = `Pr(>Chisq)`) %>%
+  kable(caption = "Type II Wald chisquare test of LME") %>%
+  kable_styling()
+
+
+
+
+
+```
+
+
+```{r active velocity}
+
+A.14.vel <-
+A.14.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+B.14.vel <-
+B.14.fulldata %>%
+  group_by(fish_id) %>%
+  mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+
+
+C.14.vel <-
+C.14.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(active_velocity = Distance_travelled/cum_movement) %>%
+      subset(!(active_velocity >15))
+
+```
+
+
+```{r 14dpf STATS Velocity}
+
+A.14.lm.vel <- A.14.vel %>%
+  droplevels() %>%
+  lmer(formula = log(active_velocity) ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .)
+
+plot(residuals(A.14.lm.vel) ~ fitted(A.14.lm.vel)) 
+qqPlot(residuals(A.14.lm.vel))
+
+Anova(A.14.lm.vel) 
+
+
+
+B.14.lm.vel <- B.14.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(B.14.lm.vel) 
+
+
+
+C.14.lm.vel <- C.14.vel %>%
+  droplevels() %>%
+  glmer(formula = active_velocity ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = Gamma (link = "log"))
+
+Anova(C.14.lm.vel) 
+```
+
+
+```{r time spent moving}
+
+A.14.lm.mov_time <- A.14.vel %>%
+  droplevels() %>%
+   glmmTMB(formula = cum_movement/1200.1 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+Anova(A.14.lm.mov_time) 
+
+
+
+B.14.lm.mov_time <- B.14.vel %>%
+  droplevels() %>%
+   glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+Anova(B.14.lm.mov_time) 
+
+
+
+C.14.lm.mov_time <- C.14.vel %>%
+  droplevels() %>%
+    glmmTMB(formula = cum_movement/1200 ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+       data = .,
+       family = beta_family (link = "logit"))
+
+Anova(C.14.lm.mov_time) 
+
+```
+
+
+
+```{r centre time spent STATS1}
+
+
+A.14.lm_time_centre1 <-
+  A.14.fulldata %>%
+  dplyr::mutate(Time_in_centre = replace(Time_in_centre, Time_in_centre == 0, 0.0000001)) %>%
+  glmmTMB(formula = Time_in_centre/1200 ~ (Genotype*Bin) + (1|Trial) + (1|fish_id), 
+          data = .,
+          family = beta_family(link = "logit"))
+
+
+plot(residuals(A.14.lm_time_centre1) ~ fitted(A.14.lm_time_centre1)) 
+qqPlot(residuals(A.14.lm_time_centre1))
+
+
+Anova(A.14.lm_time_centre1)
+
+
+
+
+B.14.lm_time_centre1 <-
+  B.14.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(Time_in_centre = replace(Time_in_centre, Time_in_centre == 0, 0.0000001)) %>%
+  glmmTMB(formula = Time_in_centre/1200 ~ (Genotype*Bin) + (1|Trial) + (1|fish_id), 
+          data = .,
+          family = beta_family(link = "logit"))
+
+Anova(B.14.lm_time_centre1)
+
+
+C.14.lm_time_centre1 <-
+  C.14.fulldata %>%
+  group_by(fish_id) %>%
+  dplyr::mutate(Time_in_centre = replace(Time_in_centre, Time_in_centre == 0, 0.0000001)) %>%
+  glmmTMB(formula = Time_in_centre/1200 ~ (Genotype*Bin) + (1|Trial) + (1|fish_id), 
+          data = .,
+          family = beta_family(link = "logit"))
+
+Anova(C.14.lm_time_centre1)
+
+
+
+```
+
+
+```{r freq in centre STATS}
+A.14.lm.freq <-
+  A.14.fulldata %>% 
+  dplyr::mutate(fish_id = as.character(fish_id)) %>% 
+  glmer.nb(Freq_in_centre ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+           data = .,
+           family = Poisson (link = "log"))
+
+
+Anova(A.14.lm.freq)
+
+
+
+B.14.lm.freq <-
+  B.14.fulldata %>% 
+  dplyr::mutate(fish_id = as.character(fish_id)) %>% 
+  glmer.nb(Freq_in_centre ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+           data = .,
+           family = Poisson (link = "log"))
+
+
+Anova(B.14.lm.freq)
+
+
+
+C.14.lm.freq <-
+  C.14.fulldata %>% 
+  dplyr::mutate(fish_id = as.character(fish_id)) %>% 
+  glmer.nb(Freq_in_centre ~ (Bin*Genotype) + (1|Trial) + (1|fish_id),
+           data = .,
+           family = Poisson (link = "log"))
+
+
+Anova(C.14.lm.freq)
+
+```

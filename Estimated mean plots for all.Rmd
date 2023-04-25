@@ -1,0 +1,2490 @@
+---
+title: "Trial"
+author: "LR"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+making estimated mean plots for all
+```{r total dist mps iiia}
+
+ggarrange(
+  
+  print(emmeans(A.5.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,22000), labels = comma) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    A.col1 + A.col2 +
+    scale_x_discrete(name =  " " ) +
+    theme(legend.position = "none") +
+    ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype = 0.45") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+  
+  
+  print(emmeans(A.7.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    A.col1 + A.col2 +
+    scale_x_discrete(name = " ") +
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,22000), labels = comma) +
+    ggtitle("MPS IIIA 7 dpf", subtitle = "Effect of genotype = 0.75") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+    
+  
+  
+  print(emmeans(A.14.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,22000), labels = comma) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    A.col1 + A.col2 +
+    scale_x_discrete(name = element_blank()) +
+    ggtitle("MPS IIIA 14 dpf", subtitle = "Effect of genotype = 0.52") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+  
+  
+  
+  nrow = 3,
+  ncol = 1,
+  align = "v",
+  labels = "AUTO"
+)
+
+
+
+ggsave(filename = "emmean total distance/mps iia distance.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+
+```
+
+```{r total dist mps iiib}
+
+ggarrange(
+  
+  print(emmeans(B.5.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    scale_y_continuous(name = "Distance travelled (mm)", limits = c(0,13141), labels = comma) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    B.col1 + B.col2 +
+    scale_x_discrete(name = " ") +
+    theme(legend.position = "none") +
+  ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype = 0.87") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+  
+  
+  print(emmeans(B.7.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    B.col1 + B.col2 +
+    scale_x_discrete(name = " ") +
+    scale_y_continuous(name = element_blank(),limits = c(0,13141), labels = comma) +
+      ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype = 0.85") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+  
+  
+  print(emmeans(B.14.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    scale_y_continuous(name = element_blank(), limits = c(0,13141), labels = comma) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    B.col1 + B.col2 +
+    scale_x_discrete(name = " ") +
+    ggtitle("MPS IIIB 14 dpf", subtitle = "Effect of genotype = 0.97") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+  ncol = 1,
+  labels = "AUTO",
+  align = "v"
+)
+
+
+
+ggsave(filename = "emmean total distance/EMEAN MPS IIIB.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+
+```
+
+```{r total dist mps iiic}
+ggarrange(
+  
+  print(emmeans(C.5.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    scale_y_continuous(name = "Distance travelled (mm)", limits = c(0,24420), labels = comma) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    C.col1 + C.col2 +
+    scale_x_discrete(name = " ") +
+ ggtitle("MPS IIIC 5 dpf", subtitle = "Effect of genotype = 0.21") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+  
+  
+  
+  print(emmeans(C.7.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    C.col1 + C.col2 +
+    scale_x_discrete(name = " ") +
+    scale_y_continuous(name = element_blank(),limits = c(0,24420), labels = comma) +
+    ggtitle("MPS IIIC 7 dpf", subtitle = "Effect of genotype = 0.52") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+  
+  
+  print(emmeans(C.14.model.totaldistance, ~ Genotype), type ="response") %>%
+    as_tibble() %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    scale_y_continuous(name = element_blank(),limits = c(0,24420), labels = comma) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    C.col1 + C.col2 +
+    scale_x_discrete(name = " ") +
+    ggtitle("MPS IIIC 14 dpf", subtitle = "Effect of genotype = 0.89") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), plot.subtitle = element_text(hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), legend.position = "none"),
+  ncol = 1,
+  labels = "AUTO",
+  align = "v"
+  
+)
+
+
+
+ggsave(filename = "emmean total distance/EMEAN MPS IIIC.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+
+```
+
+
+
+
+```{r binned distance mpsiiia}
+
+ggarrange(
+  print(emmeans(A.5.model.20minbin, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ", labels=c("wt" = "+/+", "het" = "+/S387Lfs", "hom" = "S387Lfs/S387Lfs")) + 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,7100), labels = comma) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype:bin = 0.90") +
+    
+    theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+
+  
+  print(emmeans(A.7.model.20minbin, ~ Genotype * Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ", labels=c("wt" = "+/+", "het" = "+/S387Lfs", "hom" = "S387Lfs/S387Lfs")) + 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,7100), labels = comma) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 7 dpf", subtitle = "Effect of genotype:bin = 0.96") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+
+  
+  
+  print(emmeans(A.14.model.20minbin, ~ Genotype * Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ", labels=c("wt" = "+/+", "het" = "+/S387Lfs", "hom" = "S387Lfs/S387Lfs")) + 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,7100), labels = comma) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 14 dpf", subtitle = "Effect of genotype:bin = 0.39") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  labels = "AUTO"
+  
+)
+
+ggsave(filename = "emmean binned distance/mpsiiia 20 min bins.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+
+
+```
+
+```{r binned distance mmpsiiib}
+
+ggarrange(
+  print(emmeans(B.5.model.20minbin, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,4400), labels = comma) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype:bin = 0.036") +
+       theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(B.7.model.20minbin, ~ Genotype * Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax = upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,4400), labels = comma) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype:bin = 0.57") +
+      theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(B.14.model.20minbin, ~ Genotype * Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,4400), labels = comma) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 14 dpf", subtitle = "Effect of genotype:bin = 0.71") +
+      theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  labels = "AUTO"
+)
+
+
+ggsave(filename = "emmean binned distance/mpsiiib 20 min bins.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+
+
+```
+
+```{r binned distance mmpsiiic}
+
+ggarrange(
+  print(emmeans(C.5.model.20minbin, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = emmean, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,8600), labels = comma) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 5 dpf", subtitle = "Effect of genotype:bin = 0.57") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(C.7.model.20minbin, ~ Genotype * Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,8600), labels = comma) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 7 dpf", subtitle = "Effect of genotype:bin = 0.33") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(C.14.model.20minbin, ~ Genotype * Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Distance (mm)", limits = c(0,8600), labels = comma) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+   ggtitle("MPS IIIC 14 dpf", subtitle = "Effect of genotype:bin = 0.13") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  ncol = 1,
+  labels = "AUTO"
+  
+)
+
+
+ggsave(filename = "emmean binned distance/mpsiiic 20 min bins.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+
+
+```
+
+
+
+
+```{r time moving mpsiiia}
+ggarrange(
+  print(emmeans(A.5.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+     ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype:bin = 0.68") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(A.7.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 7 dpf", subtitle = "Effect of genotype:bin = 0.99") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(A.14.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "") + 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+   ggtitle("MPS IIIA 14 dpf", subtitle = "Effect of genotype:bin = 0.74") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol =1,
+  labels = "AUTO")
+
+
+ggsave(filename = "emmean time moving/mps iiia EMMEAN time moving.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+```
+
+```{r time moving mpsiiib}
+ggarrange(
+  print(emmeans(B.5.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype:bin = 0.74") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(B.7.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype:bin = 0.57") +
+   theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(B.14.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 14 dpf", subtitle = "Effect of genotype:bin = 0.036") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol =1,
+  labels = "AUTO")
+
+
+ggsave(filename = "emmean time moving/mps iiib EMMEAN time moving.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+```
+
+```{r time moving mpsiiic}
+ggarrange(
+  print(emmeans(C.5.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 5 dpf", subtitle = "Effect of genotype:bin = 0.55") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(C.7.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+  ggtitle("MPS IIIC 7 dpf", subtitle = "Effect of genotype:bin = 0.99") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(C.14.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Ratio", limits = c(0,1)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+     ggtitle("MPS IIIC 14 dpf", subtitle = "Effect of genotype:bin = 0.06") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol =1,
+  labels = "AUTO")
+
+
+ggsave(filename = "emmean time moving/mps iiic EMMEAN time moving.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+```
+
+
+
+
+```{r EMMEANS ACTIVE VELOCITY mpsiiia}
+
+
+ggarrange(
+  print(emmeans(A.5.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,6.4)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype:bin = 0.50") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(A.7.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,6.4)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 7 dpf", subtitle = "Effect of genotype:bin = 0.55") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  
+  print(emmeans(A.14.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,6.4)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 14 dpf", subtitle = "Effect of genotype:bin = 0.54" ) +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  labels = "AUTO")
+
+ggsave(filename = "emmean velocity/mpsiia EMMEAN velocity.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+
+```
+
+```{r EMMEANS A VELOCITY mpsiiib}
+
+
+ggarrange(
+  print(emmeans(B.5.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = lower.CL, ymax =upper.CL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,10.5)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype:bin = 0.66") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(B.7.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,10.5)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype:bin = 0.06") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  
+  
+  print(emmeans(B.14.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,10.5)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 14 dpf", subtitle = "Effect of genotype:bin = 0.010") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  labels = "AUTO")
+
+ggsave(filename = "emmean velocity/mpsiiib EMMEAN velocity.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+
+
+
+
+```
+
+```{r EMMEANS A VELOCITY mpsiiic}
+
+
+ggarrange(
+  print(emmeans(C.5.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,6.8)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 5 dpf", subtitle = "Effect of genotype:bin = 0.49") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(C.7.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,6.8)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 7 dpf", subtitle = "Effect of genotype:bin = 0.023") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  
+  
+  print(emmeans(C.14.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Velocity (mm/s)", limits = c(0,6.8)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 14 dpf", subtitle = "Effect of genotype:bin = 0.29") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  labels = "AUTO")
+
+ggsave(filename = "emmean velocity/mpsiiic EMMEAN velocity.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+
+
+```
+
+
+
+```{r time spent in centre mps iiia}
+ggarrange(
+  print(emmeans(A.5.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,0.21)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype:bin = 0.042") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  
+  print(emmeans(A.7.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,0.21)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 7 dpf", subtitle = "Effect of genotype:bin = 0.074") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(A.14.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,0.21)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 14 dpf", subtitle = "Effect of genotype:bin = 0.41") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  labels = "AUTO"
+  
+)
+
+
+ggsave(filename = "emmean time in centre/MPS IIIA time in centre.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+
+
+```
+
+```{r time spent in centre mps iiib}
+ggarrange(
+  print(emmeans(B.5.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,0.29)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype:bin = 0.41*") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  
+  print(emmeans(B.7.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+      scale_x_discrete(name = " ", labels=c("wt" = "+/+", "het" = "+/A603Efs", "hom" = "A603Efs/A603Efs")) +
+    scale_y_continuous(name = "Ratio", limits = c(0,0.29)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+   
+    ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype:bin = 0.61*") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(B.14.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,0.29)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 14 dpf", subtitle = "Effect of genotype:bin = 0.21") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  labels = "AUTO"
+  
+)
+
+ggsave(filename = "emmean time in centre/MPS IIIB time in centre.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+
+
+```
+
+```{r time spent in centre mps iiic}
+ggarrange(
+  print(emmeans(C.5.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio",limits = c(0,0.2)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 5 dpf", subtitle = "Effect of genotype:bin = 0.65") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  
+  print(emmeans(C.7.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio",limits = c(0,0.2)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 7 dpf", subtitle = "Effect of genotype:bin = 0.00012") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(C.14.lm_time_centre1, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Ratio", limits = c(0,0.2)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 14 dpf", subtitle = "Effect of genotype:bin = 0.010") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  labels = "AUTO"
+  
+)
+
+
+ggsave(filename = "emmean time in centre/MPS IIIC time in centre.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+
+
+```
+
+
+
+```{r frequency in centre mps iiia}
+ggarrange(
+  print(emmeans(A.5.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Number of crosses", limits = c(0,120)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype:bin = 0.15*") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(A.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ", labels=c("wt" = "+/+", "het" = "+/S387Lfs", "hom" = "S387Lfs/S387Lfs")) + 
+    scale_y_continuous(name = "Number of crosses", limits = c(0,120)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 7 dpf", subtitle = "Effect of genotype:bin = 0.19") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(A.14.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Number of crosses", limits = c(0,120)) +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA 14 dpf", subtitle = "Effect of genotype:bin = 0.71") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  align = "v",
+  labels = "AUTO"
+)
+
+ggsave(filename = "emmean freq in centre/mpsiiia freq in centre.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+```
+
+
+```{r frequency in centre mpsiiib}
+ggarrange(
+  print(emmeans(B.5.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Number of crosses", limits = c(0,105)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype:bin = 0.34*") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(B.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+      scale_x_discrete(name = " ", labels=c("wt" = "+/+", "het" = "+/A603Efs", "hom" = "A603Efs/A603Efs")) +
+    scale_y_continuous(name = "Number of crosses", limits = c(0,105)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype:bin = 0.15*") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(B.14.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+      scale_x_discrete(name = " ", labels=c("wt" = "+/+", "het" = "+/A603Efs", "hom" = "A603Efs/A603Efs")) +
+    scale_y_continuous(name = "Number of crosses", limits = c(0,105)) +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB 14 dpf", subtitle = "Effect of genotype:bin = 0.26") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  align = "v",
+  labels = "AUTO"
+)
+
+ggsave(filename = "emmean freq in centre/mpsiiib freq in centre.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+```
+
+
+```{r mpsiiic freq in centre graph}
+ggarrange(
+  print(emmeans(C.5.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Number of crosses", limits = c(0,150)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 5 dpf", subtitle = "Effect of genotype:bin = 0.99*") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  print(emmeans(C.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Number of crosses", limits = c(0,150)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 7 dpf", subtitle = "Effect of genotype:bin = 0.0018*") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  print(emmeans(C.14.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Number of crosses", limits = c(0,150)) +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC 14 dpf", subtitle = "Effect of genotype:bin = 0.68*") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  ncol = 1,
+  align = "v",
+  labels = "AUTO"
+)
+
+ggsave(filename = "emmean freq in centre/mpsiiic freq in centre.png", width = 30, height = 50, units = "cm", dpi = 400, scale = .6)
+
+```
+
+
+
+
+```{r emeans ALL VELOCITY}
+
+ggarrange(
+  print(emmeans(A.5.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5))+
+    theme(text = element_text(size = 10)),
+  
+  
+  print(emmeans(B.5.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5))+
+    theme(text = element_text(size = 10)),
+  
+  
+  
+  
+  print(emmeans(C.5.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5))+
+    theme(text = element_text(size = 10)),
+  
+  print(emmeans(A.7.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5))+
+    theme(text = element_text(size = 10)),
+  
+  
+  print(emmeans(B.7.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5))+
+    theme(text = element_text(size = 10)),
+  
+  
+  
+  
+  print(emmeans(C.7.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5))+
+    theme(text = element_text(size = 10)),
+  
+  
+  
+  
+  print(emmeans(A.14.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIA") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5))+
+    theme(text = element_text(size = 10)),
+  
+  
+  print(emmeans(B.14.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ")+ 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIB") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5)) +
+    theme(text = element_text(size = 10)),
+  
+  
+  
+  
+  print(emmeans(C.14.lm.vel, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = " ") + 
+    scale_y_continuous(name = "Velocity (mm/s)") +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin) +
+    ggtitle("MPS IIIC") +
+    theme(plot.title = element_text(face="bold", hjust = 0.5)) +
+    theme(text = element_text(size = 10)),
+  ncol = 1 )
+
+ggsave(filename = "emmean velocity/ALL EMMEAN velocity.png", width = 40, height = 90, units = "cm", dpi = 400, scale = 0.6)
+
+```
+
+```{r EMMEANS all time moving plot}
+
+
+ggarrange(
+print(emmeans(A.5.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = element_blank()) + 
+  scale_y_continuous(name = "Ratio") +
+  A.col1 + A.col2 +
+  facet_wrap(~Bin) +
+  ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype:bin = 0.68") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+
+
+
+print(emmeans(A.7.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = element_blank()) + 
+  scale_y_continuous(name = "Ratio") +
+  A.col1 + A.col2 +
+  facet_wrap(~Bin) +
+  ggtitle("MPS IIIA 7 dpf", subtitle = "Effect of genotype:bin = 0.99") +
+     theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+
+
+
+
+print(emmeans(A.14.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = element_blank()) + 
+  scale_y_continuous(name = "Ratio") +
+  A.col1 + A.col2 +
+  facet_wrap(~Bin) +
+  ggtitle("MPS IIIA 7 dpf", subtitle = "Effect of genotype:bin = 0.74") +
+  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  ncol =1,
+  labels = "AUTO"
+  )
+
+
+        
+ggsave(filename = "emmean time moving/mpsiiia time moving.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+
+
+ggarrange(
+print(emmeans(B.5.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = element_blank()) + 
+  scale_y_continuous(name = "Ratio") +
+  B.col1 + B.col2 +
+  facet_wrap(~Bin) +
+  ggtitle("MPS IIIB 5 dpf", subtitle = "Effect of genotype:bin = 0.30") +
+  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+ 
+
+print(emmeans(B.7.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = element_blank()) + 
+  scale_y_continuous(name = "Ratio") +
+  B.col1 + B.col2 +
+  facet_wrap(~Bin) +
+  ggtitle("MPS IIIB 7 dpf", subtitle = "Effect of genotype:bin = 0.57") +
+  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+
+
+print(emmeans(B.14.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = element_blank()) + 
+  scale_y_continuous(name = "Ratio") +
+  B.col1 + B.col2 +
+  facet_wrap(~Bin) +
+  ggtitle("MPS IIIB 14 dpf", subtitle = "Effect of genotype:bin = 0.035") +
+  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  ncol =1,
+  labels = "AUTO"
+  )
+
+ggsave(filename = "emmean time moving/mpsiiib time moving.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+ggarrange(
+print(emmeans(C.5.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = " ") + 
+  scale_y_continuous(name = "Ratio") +
+  C.col1 + C.col2 +
+  facet_wrap(~Bin) +
+   ggtitle("MPS IIIC 5 dpf", subtitle = "Effect of genotype:bin = 0.55") +
+  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+
+
+print(emmeans(C.7.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = " ") + 
+  scale_y_continuous(name = "Ratio") +
+  C.col1 + C.col2 +
+  facet_wrap(~Bin) +
+   ggtitle("MPS IIIC 7 dpf", subtitle = "Effect of genotype:bin = 0.99") +
+  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+
+
+
+
+print(emmeans(C.14.lm.mov_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = " ") + 
+  scale_y_continuous(name = "Ratio") +
+  C.col1 + C.col2 +
+  facet_wrap(~Bin) +
+  ggtitle("MPS IIIC 14 dpf", subtitle = "Effect of genotype:bin = 0.060") +
+  theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+
+ncol = 1,
+labels = "AUTO")
+
+ggsave(filename = "emmean time moving/mpsiiic time moving.png", width = 30, height = 50, units = "cm", dpi = 400, scale = 0.6)
+
+```
+
+```{r ALL emmean time spent in centre WRITTEN WRONG}
+ggarrange(
+  print(emmeans(A.5.lm_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_y_continuous(name = "Ratio") +
+    A.col1 + A.col2 +
+       ggtitle("MPS IIIA 5 dpf", subtitle = "Effect of genotype:bin = 0.010") +
+ theme(plot.title = element_text(face="bold", hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1), plot.subtitle = element_text(hjust = 0.5)),
+  
+  
+  
+  print(emmeans(A.7.lm_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIB") + 
+    scale_y_continuous(name = "Ratio") +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin),
+  
+  print(emmeans(A.14.lm_time, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIC") + 
+    scale_y_continuous(name = "Ratio") +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin))
+
+print(emmeans(A.7.lm_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = "MPS IIIA") + 
+  scale_y_continuous(name = "Ratio") +
+  A.col1 + A.col2 +
+  facet_wrap(~Bin),
+
+print(emmeans(B.7.lm_time, ~ Genotype * Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = "MPS IIIB") + 
+  scale_y_continuous(name = "Ratio") +
+  B.col1 + B.col2 +
+  facet_wrap(~Bin),
+
+
+print(emmeans(C.7.lm_time, ~ Genotype * Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = "MPS IIIC") + 
+  scale_y_continuous(name = "Ratio") +
+  C.col1 + C.col2 +
+  facet_wrap(~Bin),
+
+print(emmeans(A.14.lm_time, ~ Genotype*Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = "MPS IIIA") + 
+  scale_y_continuous(name = "Ratio") +
+  A.col1 + A.col2 +
+  facet_wrap(~Bin),
+
+print(emmeans(B.14.lm_time, ~ Genotype * Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = "MPS IIIB") + 
+  scale_y_continuous(name = "Ratio") +
+  B.col1 + B.col2 +
+  facet_wrap(~Bin),
+
+
+print(emmeans(C.14.lm_time, ~ Genotype * Bin), type = "response") %>%
+  as_tibble() %>%
+  mutate(binforvis = case_when(
+    Bin == 1 ~ "Start-0-0:20:00",
+    Bin == 2 ~ "0:20:00-0:40:00",
+    Bin == 3 ~ "0:40:00-1:00:00"
+  )) %>%
+  ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+  geom_col(aes(fill = Genotype),
+           alpha = 0.5,
+           width = 0.75,
+           position = position_dodge()) +
+  geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                width = 0.125,
+                size = 1,
+                position = position_dodge(width = 0.75)) +
+  theme(legend.position = "none") +
+  scale_x_discrete( name = "MPS IIIC") + 
+  scale_y_continuous(name = "Ratio") +
+  C.col1 + C.col2 +
+  facet_wrap(~Bin),
+
+ncol = 1,
+labels = "AUTO"
+
+)
+
+
+ggsave(filename = "emmean time in centre/EMMEAN ALL time in centre.png", width = 30, height = 90, units = "cm", dpi = 400, scale = .6)
+
+
+)
+
+
+
+
+
+```
+
+```{r frequency in centre all}
+ggarrange(
+  print(emmeans(A.5.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIA") + 
+    scale_y_continuous(name = "Number of crosses") +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin),
+  
+  
+  
+  print(emmeans(B.5.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIB") + 
+    scale_y_continuous(name = "Number of crosses") +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin),
+  
+  
+  
+  
+  
+  print(emmeans(C.5.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIC") + 
+    scale_y_continuous(name = "Number of crosses") +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin),
+  print(emmeans(A.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIA") + 
+    scale_y_continuous(name = "Number of crosses") +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin),
+  
+  
+  
+  print(emmeans(B.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIB") + 
+    scale_y_continuous(name = "Number of crosses") +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin),
+  
+  print(emmeans(C.7.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIC") + 
+    scale_y_continuous(name = "Number of crosses") +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin),
+  
+  print(emmeans(A.14.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIA") + 
+    scale_y_continuous(name = "Number of crosses") +
+    A.col1 + A.col2 +
+    facet_wrap(~Bin),
+  
+  
+  
+  print(emmeans(B.14.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIB") + 
+    scale_y_continuous(name = "Number of crosses") +
+    B.col1 + B.col2 +
+    facet_wrap(~Bin),
+  
+  
+  
+  
+  
+  print(emmeans(C.14.lm.freq, ~ Genotype*Bin), type = "response") %>%
+    as_tibble() %>%
+    mutate(binforvis = case_when(
+      Bin == 1 ~ "Start-0-0:20:00",
+      Bin == 2 ~ "0:20:00-0:40:00",
+      Bin == 3 ~ "0:40:00-1:00:00"
+    )) %>%
+    ggplot(aes(x = Genotype, y = response, colour = Genotype)) +
+    geom_col(aes(fill = Genotype),
+             alpha = 0.5,
+             width = 0.75,
+             position = position_dodge()) +
+    geom_errorbar(aes(ymin = asymp.LCL, ymax =asymp.UCL),
+                  width = 0.125,
+                  size = 1,
+                  position = position_dodge(width = 0.75)) +
+    theme(legend.position = "none") +
+    scale_x_discrete( name = "MPS IIIC") + 
+    scale_y_continuous(name = "Number of crosses") +
+    C.col1 + C.col2 +
+    facet_wrap(~Bin),
+  
+  ncol = 1,
+  
+  labels = "AUTO"
+  
+)
+
+
+ggsave(filename = "emmean freq in centre/ALL EMMEAN freq in centre.png", width = 30, height = 90, units = "cm", dpi = 400, scale = 0.7)
+
+
+
+```
+
+
+
+
+
+

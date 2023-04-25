@@ -1,0 +1,550 @@
+---
+title: "14dpf_naglu_20_second_bins"
+output: html_document
+date: "2023-02-06"
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Setup
+
+NOTE: Omitted samples 73 - 120 as they were from a different pairmate. Reserach suggests that parent personality can affect larval behaviour.
+Here I load my libraries
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(readxl)
+library(dplyr)
+# statistical analusis
+library(lme4)
+library(broom)
+library(car)
+library(performance)
+library(emmeans)
+library(MASS)
+library(see)
+# data visualstion
+library(scales)
+library(ggpubr)
+library(ggeasy)
+library(ggfortify)
+library(ggbeeswarm)
+library(kableExtra)
+
+
+theme_set(theme_bw())
+```
+
+
+#joining distance with genotype
+This part is joining the two files together - the meta data of genotype and the distance data output
+
+```{r}
+#stb stands for small timebin
+data.stb <-
+  read_excel("Statistics 20s time bin 14dpf naglu.xlsx")
+data.stb <-
+  subset(data.stb, select = -c(`...1`,`Independent Variable Independent Variable Treatment`))
+
+
+data.stb <-
+  data.stb %>%
+  rename(
+    "Trial" = `...2`,
+    "Position" = `...3`,
+    "Bin" = `...4`,
+    "min dist" = "Distance moved center-point Minimum mm",
+    "Distance_travelled" = "Distance moved center-point Total mm",
+    "Mean_Velocity" = "Velocity center-point Mean mm/s",
+    "Freq_in_centre" = "In zone Centre / center-point Frequency" ,
+    "Time_in_centre" = "In zone Centre / center-point Cumulative Duration s"
+  )%>%
+       mutate(Trial = str_remove(Trial, pattern = "Trial     ") %>%
+         as.factor())
+```
+
+Turning Bins into factors
+
+
+At this point, there is an issue with the number of bins I have, so selecting all of them as levels is a bit tricky, her is karissa's solution. She made a new table consisting of the bin column, she then linked them to a sequential order of number
+
+temp <- data.stb$Bin %>%
+  unique %>%
+  as_tibble %>%
+  set_colnames("Bin") %>%
+  mutate(Bin_number = rownames(.))
+
+data.stb <-
+temp %>%
+  left_join(data.stb, by = ("Bin"))
+
+
+Lachie suggested another method which will allow me to do it without making a new column as I was having trouble selecting all 180 characters as levels. 
+
+!!!! I dont have to add in the values themselves - I can use the column name itself to do it !!! interestingly when i hover over the column when the data is presented on a new tab it says its a factor with 1 level but if I open it on the console it shows 180 levels. Pretty, pretty, pretty, pretty, pretty annoying. 
+
+```{r}
+data.stb <- 
+  data.stb %>%
+  mutate(Bin = factor(Bin, levels = unique(Bin)))
+
+
+```
+
+
+
+setting up the meta file and working it into the data.stb file 
+
+```{r}
+meta.stb <- read_excel("/Users/Lakshay/Desktop/Honours/Experimental data/14 dpf/14dpf naglu genotype.xlsx") %>%
+  subset(select = -`...5`) %>%
+  mutate(Genotype = factor(Genotype, levels = unique(Genotype)),
+         Trial = as.factor(Trial),
+         Position = as.factor(Position)
+  )
+
+fulldata.stb <-
+  meta %>%
+  left_join(data.stb, by = c("Trial", "Position")) %>%
+  na.omit
+
+```
+
+#Velocity data 
+
+lets get some graphs on the roll - gonna try making a function first like karissa showed me for genotypes:  
+
+plotGenoProps <- function(input, xaxis) {
+  ggplot(data = input) +
+    geom_bar(aes(x = Genotype))
+}
+
+plotGenoProps(input = fulldata, xaxis = Genotype)
+
+so, the function is laid out as function(x,y) where x and y represent the data that will be plugged into the function for each situation. next, you write out the formulas out as normal but instead of selecting data you substitute with x or y. 
+
+plotDistance will come in handy for other work.
+    
+```{r}
+
+plotDistance <- function(input, dependent, name_yaxis, title){
+  ggplot(data = input, aes(x = Genotype, y = dependent)) +
+    geom_jitter(aes(colour = Genotype,
+                  shape = Trial),
+              size = 4) +
+  geom_boxplot(aes(fill = Genotype),
+               alpha = 0.25,
+               outlier.shape = NA
+
+  ) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "name_yaxis") +
+  ggtitle("title")
+  
+}
+
+
+plotVelocity <- 
+  function(input, dependent, independent, name_yaxis, title){
+  ggplot(data = input, aes(x = independent, y = dependent)) +
+  geom_line(aes(group = Genotype))
+  }
+
+    
+plotVelocity(input = fulldata.stb, dependent = fulldata.stb$Mean_Velocity, independent = fulldata.stb$Bin, name_yaxis = "Average velocity (mm/s) per 20 seconds", title = "Average velocity of 14 day post fertilisation naglu larvae at different time points") +
+  geom_label(aes(label = fish_id), data = . 
+             %>% dplyr::filter(`Mean_Velocity` > 15))
+
+
+
+```
+Alright, so the titles dont work, probs due to the scale_ stuff being specific to boxplots? also, need group in larger time intervals.
+
+Also, sample 11's velocity is an obvious tracking error (also confirmed by checking video), so i'm going to omit it. 
+
+```{r}
+fulldata.stb <-
+subset(fulldata.stb, Mean_Velocity < 15)
+
+```
+
+
+
+
+Trying 2 minutes + making bin numbers
+
+#2 minute bins 
+```{r}
+twomin.stb <- fulldata.stb %>%
+  dplyr::select(Bin) %>%
+  unique %>%
+  as_tibble %>%
+  set_colnames("Bin") %>%
+  mutate(Bin_number = rownames(.))
+
+twomin.stb$Bin_number <- as.numeric(twomin.stb$Bin_number) 
+  
+    
+
+#twomin.stb$range <-
+  #cut(twomin.stb$Bin_number, breaks=(c(6,12,18,24,30))) - this method is still time consuming, imma try something different
+  
+twomin.stb$range <- 
+  cut(twomin.stb$Bin_number, breaks=c(0:30*6))
+
+
+```
+
+IT WORKED! Connected time points of 2 mins to a range of 6. now I can join the fulldata to it by Bin and sneak in the range that way. This will hopefully allow me to average my velocities by trial, position and range number?
+
+NOW, joining this new range with the original fulldata.stb 
+
+```{r}
+
+twomin.stb <- fulldata.stb %>%
+  right_join(twomin.stb, by = "Bin")
+
+```
+
+now, lets try to average out the fishid, velocity and range. Angel helped with the next part.
+
+Initially, i was having issues with the mutate function which does not delete rows - so it didnt know what to do with the mean for all time bins in a group. Instead, she used summarise because it can delete rows. idk why but it didnt work either so she used summarise_at instead.
+
+
+```{r}
+
+twomin.stb <- twomin.stb %>%
+  dplyr::select(fish_id, range, Mean_Velocity, Trial, Genotype, ) %>%
+  group_by(fish_id, range, Trial, Genotype) %>%
+  summarise_at("Mean_Velocity", mean)
+
+
+
+
+```
+
+Ok, now I will plot out the average velocities in 2 min bins to the function I made earlier.
+
+
+```{r}
+  
+plotVelocity(input = twomin.stb, dependent = twomin.stb$Mean_Velocity, independent = twomin.stb$range, name_yaxis = "Average velocity (mm/s) per 2 minutes", title = "Average velocity of 14 day post fertilisation naglu larvae at different time points")
+
+
+```
+
+
+Not a good looking graph, maybe i should change it to single points and/or by trial
+
+
+```{r}
+twomin.stb %>%
+ggplot(aes(x = range, y = twomin.stb$Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype
+                  ),
+                alpha = 0.5,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  facet_wrap(~Trial) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(name = "Velocity mm/s") +
+    scale_x_discrete (name = "Time (in 2 minute time bins)") +
+  ggtitle("Velocity per 2 minute time bin over five one-hour trials") +
+
+
+
+
+#+
+  #ggarrange(nrow = 1)
+    
+    ```
+
+Ok, interesting stuff, seems like trial 1 and 4 have some strange inconsistencies with wild type but not hom or het. apart from that, the genotypes seem very similar, gonna try 20 second again but just a single trial. 
+
+
+  
+  
+#20 second per trial
+
+```{r}
+small_t1 <- 
+fulldata.stb %>%
+  subset(Trial == 1) 
+
+
+temp <-
+small_t1 %>%
+  dplyr::select(Bin) %>%
+  unique %>%
+  as_tibble %>%
+  set_colnames("Bin") %>%
+  mutate(Bin_number = rownames(.),
+         Bin_number = as.numeric(Bin_number)) 
+
+small_t1 <-
+  small_t1 %>%
+  left_join(temp, by = "Bin")
+
+
+small_t1 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 1")
+ 
+ggsave(filename = "Trial 1 14dpf 20 second velocity intervals.png", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+
+  
+```
+
+#20 second per trial, Trial 2 
+```{r}
+small_t2 <- 
+fulldata.stb %>%
+  subset(Trial == 2) 
+
+small_t2 <-
+  small_t2 %>%
+  left_join(temp, by = "Bin")
+
+
+small_t2 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.5,
+              size = 2) +
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 2")
+
+  ggsave(filename = "Trial 2 14dpf 20 second velocity intervals.png", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+
+```
+
+#20 second per trial, Trial 3
+
+```{r}
+small_t3 <- 
+fulldata.stb %>%
+  subset(Trial == 3) 
+
+small_t3 <-
+  small_t3 %>%
+  left_join(temp, by = "Bin")
+
+small_t3 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.5,
+              size = 2) +
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+    scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 3")
+
+  ggsave(filename = "Trial 3 14dpf 20 second velocity intervals.png", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+
+  
+```
+  homs have relatively consistent velocity, wt and hets show "waves" of activity - suggesting that the homs are active for a greater period of itme. 
+  both het and homs have dencrease in velocity at the end of the trial, opposite for the wt.
+  
+  
+  
+```{r}
+small_t4 <- 
+fulldata.stb %>%
+  subset(Trial == 4) 
+
+
+small_t4 <-
+  small_t4 %>%
+  left_join(temp, by = "Bin")
+
+small_t4 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.5,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 4 20 second velocity intervals")
+
+ ggsave(filename = "Trial 4 14dpf 20 second velocity intervals.png", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+  
+```
+  
+  Similar to trial 1, trial 4 has significant difference in velocity of wt compared to homs and hets. potentially due to drilling noises. this suggests that 
+  
+  
+```{r}
+small_t5 <- 
+fulldata.stb %>%
+  subset(Trial == 5) 
+
+
+small_t5 <-
+  small_t5 %>%
+  left_join(temp, by = "Bin")
+
+small_t5 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.5,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  scale_y_continuous(labels = comma, name = "Velocity mm/s") +
+  scale_x_continuous(name = "Velocity per 20 second time bin") +
+  ggtitle("Trial 5 20 second velocity intervals") +
+  theme(text = element_text(size = 20))           
+
+ ggsave(filename = "Trial 5 14dpf 20 second velocity intervals.png", width = 20, height = 15, units = "cm", dpi = 600, scale = 1)
+  
+```  
+
+MAKING IT INTO A GG ARRANGE - next time just facet wrap by trial.
+
+```{r}
+ggarrange(
+           small_t1 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+   theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  ggtitle("Trial 1") +
+  theme(legend.position = "none"),
+
+           
+         small_t2 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  ggtitle("Trial 2") +
+  theme(legend.position = "none"),
+           
+           small_t3 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  ggtitle("Trial 3")+
+  theme(legend.position = "none"),
+
+small_t4 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  ggtitle("Trial 4") +
+  theme(legend.position = "none"),
+
+small_t5 %>%
+ggplot(aes(x = Bin_number, y = Mean_Velocity)) +
+    geom_jitter(aes(colour = Genotype),
+                alpha = 0.25,
+              size = 2) +
+  
+  geom_smooth(aes(group = Genotype,
+                  colour = Genotype)) +
+  scale_fill_viridis_d(end = 0.75) +
+  scale_colour_viridis_d(end = 0.75) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank(),
+        axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank()) +
+  ggtitle("Trial 5"),
+
+nrow = 1
+
+
+)
+ 
+ggsave(filename = "ALL TRIALS 14dpf 20 second velocity intervals.png", width = 90, height = 15, units = "cm", dpi = 600, scale = 1)
+
+ 
+```
+
+  
+  
+  
+  
